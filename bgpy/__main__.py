@@ -24,8 +24,7 @@ def main():
             ScenarioConfig(ScenarioCls=SubprefixHijack, AdoptPolicyCls=ROV),
         ),
         output_dir=Path("~/Desktop/main_ex").expanduser(),
-        num_trials=10,
-        parse_cpus=10,
+        num_trials=10
     )
     sim.run()
 
