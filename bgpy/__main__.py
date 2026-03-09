@@ -1,3 +1,4 @@
+from multiprocessing import cpu_count
 from pathlib import Path
 
 from bgpy.shared.enums import SpecialPercentAdoptions
@@ -25,7 +26,7 @@ def main():
         ),
         output_dir=Path("~/Desktop/main_ex").expanduser(),
         num_trials=10,
-        cpu_count=1
+        cpu_count=min(cpu_count()-1, 1) # Suggested value. Note that this is also the default
     )
     sim.run()
 
