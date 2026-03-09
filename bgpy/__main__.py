@@ -26,7 +26,9 @@ def main():
         ),
         output_dir=Path("~/Desktop/main_ex").expanduser(),
         num_trials=10,
-        cpu_count=min(cpu_count()-1, 1) # Suggested value. Note that this is also the default
+        cpu_count=min(
+            cpu_count() - 1, 1
+        ),  # Suggested value. Note that this is also the default
     )
     sim.run()
 
