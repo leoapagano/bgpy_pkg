@@ -1,12 +1,45 @@
-from typing import TYPE_CHECKING
+from collections.abc import Mapping
+from typing import TYPE_CHECKING, Protocol
 
 from bgpy.shared.enums import Relationships
 
 if TYPE_CHECKING:
-    from bgpy.as_graphs import AS
     from bgpy.simulation_engine.announcement import Announcement as Ann
 
-    from .bgp import BGP
+
+class PolicyReceiver(Protocol):
+    def receive_ann(self, ann: "Ann") -> None: ...
+
+
+class ASLike(Protocol):
+    asn: int
+    peers: tuple["ASLike", ...]
+    providers: tuple["ASLike", ...]
+    customers: tuple["ASLike", ...]
+    policy: PolicyReceiver
+
+
+class BGPPropagateLike(Protocol):
+    as_: ASLike
+    local_rib: Mapping[str, "Ann"]
+
+    def _prev_sent(self, neighbor: ASLike, ann: "Ann") -> bool: ...
+
+    def _policy_propagate(
+        self,
+        neighbor: ASLike,
+        ann: "Ann",
+        propagate_to: Relationships,
+        send_rels: set[Relationships],
+    ) -> bool: ...
+
+    def _process_outgoing_ann(
+        self,
+        neighbor: ASLike,
+        ann: "Ann",
+        propagate_to: Relationships,
+        send_rels: set[Relationships],
+    ) -> None: ...
 
 
 def propagate_to_providers(self) -> None:
@@ -47,7 +80,7 @@ def propagate_to_peers(self) -> None:
 
 
 def _propagate(
-    self: "BGP",
+    self: BGPPropagateLike,
     propagate_to: Relationships,
     send_rels: set[Relationships],
 ) -> None:
@@ -86,8 +119,8 @@ def _propagate(
 
 
 def _policy_propagate(
-    self: "BGP",
-    neighbor: "AS",
+    self: BGPPropagateLike,
+    neighbor: ASLike,
     ann: "Ann",
     propagate_to: Relationships,
     send_rels: set[Relationships],
@@ -97,14 +130,14 @@ def _policy_propagate(
     return False
 
 
-def _prev_sent(self: "BGP", neighbor: "AS", ann: "Ann") -> bool:
+def _prev_sent(self: BGPPropagateLike, neighbor: ASLike, ann: "Ann") -> bool:
     """Don't resend anything for BGPAS. For this class it doesn't matter"""
     return False
 
 
 def _process_outgoing_ann(
-    self: "BGP",
-    neighbor: "AS",
+    self: BGPPropagateLike,
+    neighbor: ASLike,
     ann: "Ann",
     propagate_to: Relationships,
     send_rels: set[Relationships],
