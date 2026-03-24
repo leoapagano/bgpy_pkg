@@ -1,14 +1,26 @@
 from collections.abc import Mapping
-from typing import TYPE_CHECKING, Protocol
+from typing import Any, Protocol
 
 from bgpy.shared.enums import Relationships
 
-if TYPE_CHECKING:
-    from bgpy.simulation_engine.announcement import Announcement as Ann
+
+class AnnLike(Protocol):
+    prefix: str
+    as_path: tuple[int, ...]
+    next_hop_asn: int
+    seed_asn: int | None
+    recv_relationship: Relationships
+
+    @property
+    def origin(self) -> int: ...
+
+    def copy(
+        self, overwrite_default_kwargs: dict[Any, Any] | None = None
+    ) -> "AnnLike": ...
 
 
 class PolicyReceiver(Protocol):
-    def receive_ann(self, ann: "Ann") -> None: ...
+    def receive_ann(self, ann: AnnLike) -> None: ...
 
 
 class ASLike(Protocol):
@@ -21,14 +33,14 @@ class ASLike(Protocol):
 
 class BGPPropagateLike(Protocol):
     as_: ASLike
-    local_rib: Mapping[str, "Ann"]
+    local_rib: Mapping[str, AnnLike]
 
-    def _prev_sent(self, neighbor: ASLike, ann: "Ann") -> bool: ...
+    def _prev_sent(self, neighbor: ASLike, ann: AnnLike) -> bool: ...
 
     def _policy_propagate(
         self,
         neighbor: ASLike,
-        ann: "Ann",
+        ann: AnnLike,
         propagate_to: Relationships,
         send_rels: set[Relationships],
     ) -> bool: ...
@@ -36,7 +48,7 @@ class BGPPropagateLike(Protocol):
     def _process_outgoing_ann(
         self,
         neighbor: ASLike,
-        ann: "Ann",
+        ann: AnnLike,
         propagate_to: Relationships,
         send_rels: set[Relationships],
     ) -> None: ...
@@ -121,7 +133,7 @@ def _propagate(
 def _policy_propagate(
     self: BGPPropagateLike,
     neighbor: ASLike,
-    ann: "Ann",
+    ann: AnnLike,
     propagate_to: Relationships,
     send_rels: set[Relationships],
 ) -> bool:
@@ -130,7 +142,7 @@ def _policy_propagate(
     return False
 
 
-def _prev_sent(self: BGPPropagateLike, neighbor: ASLike, ann: "Ann") -> bool:
+def _prev_sent(self: BGPPropagateLike, neighbor: ASLike, ann: AnnLike) -> bool:
     """Don't resend anything for BGPAS. For this class it doesn't matter"""
     return False
 
@@ -138,7 +150,7 @@ def _prev_sent(self: BGPPropagateLike, neighbor: ASLike, ann: "Ann") -> bool:
 def _process_outgoing_ann(
     self: BGPPropagateLike,
     neighbor: ASLike,
-    ann: "Ann",
+    ann: AnnLike,
     propagate_to: Relationships,
     send_rels: set[Relationships],
 ) -> None:
