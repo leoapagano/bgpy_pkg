@@ -12,7 +12,7 @@ class DiagramAggregator:
         self.base_dir.mkdir(parents=True, exist_ok=True)
         # Fix to allow loading of truncated images
         # https://stackoverflow.com/questions/60584155/oserror-image-file-is-truncated
-        ImageFile.LOAD_TRUNCATED_IMAGES = True
+        ImageFile.LOAD_TRUNCATED_IMAGES = True  # type: ignore
 
     def aggregate_diagrams(self):
         """Aggregates all test diagrams for readability into a PDF"""
