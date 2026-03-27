@@ -116,7 +116,7 @@ class ROVPPV1Lite(ROV):
 
         # If we are the origin, then there are zero invalid anns from the same neighbor
         if ann.recv_relationship == Relationships.ORIGIN:
-            return ()  # type: ignore
+            return ()
         # For each subprefix in this scenario of the prefix within the local RIB
         for subprefix in scenario.ordered_prefix_subprefix_dict[ann.prefix]:
             # For each subprefix ann that was recieved

@@ -448,10 +448,10 @@ class Scenario:
         # most specific prefix first
         prefixes = sorted(prefixes, key=lambda x: x.num_addresses)
 
-        prefix_subprefix_dict = {x: [] for x in prefixes}  # type: ignore
+        prefix_subprefix_dict = {x: [] for x in prefixes}
         for outer_prefix, subprefix_list in prefix_subprefix_dict.items():
             for prefix in prefixes:
-                if prefix.subnet_of(outer_prefix) and prefix != outer_prefix:  # type: ignore
+                if prefix.subnet_of(outer_prefix) and prefix != outer_prefix:
                     subprefix_list.append(str(prefix))
         # Get rid of ip_network
         return {str(k): v for k, v in prefix_subprefix_dict.items()}

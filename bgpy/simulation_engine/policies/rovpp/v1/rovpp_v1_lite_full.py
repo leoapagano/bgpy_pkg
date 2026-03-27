@@ -33,4 +33,4 @@ class ROVPPV1LiteFull(ROVPPV1Lite, ROVFull):
                     "Need to handle withdrawals for this"
                     " if you need this feature, please email jfuruness@gmail.com"
                 )
-                self.local_rib.add_ann(blackhole)  # type: ignore
+                self.local_rib.add_ann(blackhole)

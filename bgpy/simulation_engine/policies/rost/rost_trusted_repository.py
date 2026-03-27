@@ -41,7 +41,7 @@ class RoSTTrustedRepository:
         return f"RoSTTrustedRepository:\n{self._withdrawal_as_path_root.__repr__()}"
 
     def clear(self) -> None:
-        self.__init__()  # type: ignore
+        self.__init__()
 
     def add_ann(self, ann: Ann) -> None:
         key = (ann.prefix, ann.as_path)
@@ -72,9 +72,9 @@ class RoSTTrustedRepository:
         as_path_thus_far: list[int] = list()
         for asn in [checking_asn, *ribs_in_ann.as_path][::-1]:
             as_path_thus_far.insert(0, asn)
-            current_node = current_node.as_path_branches.get(asn)  # type: ignore
+            current_node = current_node.as_path_branches.get(asn)
             if current_node is None:
-                return False  # type: ignore
+                return False
             elif (
                 ribs_in_ann.prefix,
                 tuple(as_path_thus_far),

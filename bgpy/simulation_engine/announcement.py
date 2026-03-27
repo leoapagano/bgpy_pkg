@@ -56,7 +56,7 @@ class Announcement(YamlAble):
 
         if self.next_hop_asn is None:
             # next hop defaults to None, messing up the type
-            if len(self.as_path) == 1:  # type: ignore
+            if len(self.as_path) == 1:
                 object.__setattr__(self, "next_hop_asn", self.as_path[0])
             elif len(self.as_path) > 1:
                 raise ValueError(

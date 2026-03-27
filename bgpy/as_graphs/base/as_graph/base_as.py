@@ -69,7 +69,7 @@ class AS(YamlAble):
             self.as_graph: CallableProxyType[ASGraph] = proxy(as_graph)
         else:
             # Ignoring this because it gets set properly immediatly
-            self.as_graph = None  # type: ignore
+            self.as_graph = None
 
     def __lt__(self, as_obj: Any) -> bool:
         if isinstance(as_obj, AS):

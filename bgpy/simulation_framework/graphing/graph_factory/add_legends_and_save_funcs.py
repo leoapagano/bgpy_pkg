@@ -120,7 +120,7 @@ def _add_strongest_attacker_legend(
             if isinstance(handle, ErrorbarContainer):
                 # Create a custom line with grey marker for the legend
                 handles.append(
-                    plt.Line2D(  # type: ignore
+                    plt.Line2D(
                         [],
                         [],
                         color=handle.lines[0].get_color(),

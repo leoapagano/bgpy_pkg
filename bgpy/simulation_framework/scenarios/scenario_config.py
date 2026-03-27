@@ -40,7 +40,7 @@ class ScenarioConfig:
     AnnCls: type[Ann] = Ann
     BasePolicyCls: type[Policy] = BGP
     # Fixed in post init, but can't show mypy for some reason
-    AdoptPolicyCls: type[Policy] = MISSINGPolicy  # type: ignore
+    AdoptPolicyCls: type[Policy] = MISSINGPolicy
     # Used to override attacker's base policy class
     AttackerBasePolicyCls: type[Policy] | None = None
     num_attackers: int = 1
@@ -93,7 +93,7 @@ class ScenarioConfig:
 
         if self.propagation_rounds is None:
             # BGP-iSec needs this. NOTE: mypy thinks this is unreachable
-            if (  # type: ignore
+            if (
                 issubclass(self.AdoptPolicyCls, BGPiSecTransitive)
             ):
                 from bgpy.simulation_framework import ShortestPathPrefixHijack  # noqa

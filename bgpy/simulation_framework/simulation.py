@@ -357,7 +357,7 @@ class Simulation:
                 new_tasks.append(task)
         return completed, new_tasks
 
-    def _update_tqdm_progress_bar(self, pbar: tqdm) -> None:  # type: ignore
+    def _update_tqdm_progress_bar(self, pbar: tqdm) -> None:
         """Updates tqdm progress bar"""
 
         total_completed = 0
