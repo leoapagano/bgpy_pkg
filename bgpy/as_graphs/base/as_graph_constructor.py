@@ -16,14 +16,20 @@ if TYPE_CHECKING:
 class ASGraphConstructor(ABC):
     def __init__(
         self,
-        ASGraphCollectorCls: type["ASGraphCollector"],
-        ASGraphCls: type["ASGraph"],
+        ASGraphCollectorCls: type["ASGraphCollector"] | None = None,
+        ASGraphCls: type["ASGraph"] | None = None,
         as_graph_collector_kwargs=frozendict(),
         as_graph_kwargs=frozendict(),
         tsv_path: Path | None = None,
         stubs: bool = True,
     ) -> None:
         """Stores download time and cache_dir instance vars and creates dir"""
+
+        if ASGraphCollectorCls is None or ASGraphCls is None:
+            raise ValueError(
+                "ASGraphCollectorCls and ASGraphCls must be provided to "
+                "ASGraphConstructor"
+            )
 
         self.as_graph_collector: ASGraphCollector = ASGraphCollectorCls(
             **as_graph_collector_kwargs

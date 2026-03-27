@@ -8,7 +8,7 @@ from copy import deepcopy
 from multiprocessing import Pool, cpu_count
 from pathlib import Path
 from tempfile import TemporaryDirectory
-from typing import TYPE_CHECKING, Iterable
+from typing import TYPE_CHECKING, Iterable, TypedDict, cast
 from warnings import warn
 
 import psutil
@@ -47,6 +47,13 @@ parser.add_argument(
 )
 # parse known args to avoid crashing during pytest
 args, _unknown = parser.parse_known_args()
+
+
+class ASGraphConstructorKwargs(TypedDict, total=False):
+    as_graph_collector_kwargs: frozendict[str, Path]
+    as_graph_kwargs: frozendict[str, bool]
+    tsv_path: Path | None
+    stubs: bool
 
 
 class Simulation:
@@ -135,7 +142,9 @@ class Simulation:
         # Done here so that the caida files are cached
         # So that multiprocessing doesn't interfere with one another
         self.ASGraphConstructorCls: type[ASGraphConstructor] = ASGraphConstructorCls
-        self.as_graph_constructor_kwargs = as_graph_constructor_kwargs
+        self.as_graph_constructor_kwargs: ASGraphConstructorKwargs = cast(
+            "ASGraphConstructorKwargs", as_graph_constructor_kwargs
+        )
         # Validate before building the graph to give the user a few seconds to kill
         # the program if desired (if RAM would run out) or validation errors before
         # multi-second as graph loading takes place
@@ -464,8 +473,10 @@ class Simulation:
         engine isn't picklable or dillable, as it has weakrefs, which
         will deserialize to dead refs
         """
-        constructor_kwargs = dict(self.as_graph_constructor_kwargs)
-        constructor_kwargs["tsv_path"] = None
+        constructor_kwargs: ASGraphConstructorKwargs = {
+            **self.as_graph_constructor_kwargs,
+            "tsv_path": None,
+        }
         as_graph: ASGraph = self.ASGraphConstructorCls(**constructor_kwargs).run()
         engine = self.SimulationEngineCls(
             as_graph,
