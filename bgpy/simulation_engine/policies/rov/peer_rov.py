@@ -12,7 +12,7 @@ class PeerROV(BGP):
 
     name: str = "PeerROV"
 
-    def _valid_ann(self, ann: "Ann", recv_rel: "Relationships") -> bool:
+    def _valid_ann(self, ann: "Ann", from_rel: "Relationships") -> bool:
         """Returns announcement validity
 
         Returns false if invalid by roa and coming from a peer,
@@ -29,4 +29,4 @@ class PeerROV(BGP):
             return False
         # Use standard BGP to determine if the announcement is valid
         else:
-            return super()._valid_ann(ann, recv_rel)
+            return super()._valid_ann(ann, from_rel)

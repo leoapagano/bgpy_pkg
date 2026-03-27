@@ -12,7 +12,7 @@ class PeerlockLite(BGP):
 
     name: str = "Peerlock Lite"
 
-    def _valid_ann(self, ann: "Ann", recv_rel: "Relationships") -> bool:
+    def _valid_ann(self, ann: "Ann", from_rel: "Relationships") -> bool:
         """Returns announcement validity
 
         Returns false if there are ASes between input clique,
@@ -20,9 +20,9 @@ class PeerlockLite(BGP):
         to determine validity
         """
 
-        if self.valid_by_peerlock_lite(ann, recv_rel):
+        if self.valid_by_peerlock_lite(ann, from_rel):
             # Use standard BGP to determine if the announcement is valid
-            return super()._valid_ann(ann, recv_rel)
+            return super()._valid_ann(ann, from_rel)
         # Invalid by peerlock lite
         else:
             return False

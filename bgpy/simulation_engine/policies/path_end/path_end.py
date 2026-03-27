@@ -12,7 +12,7 @@ class PathEnd(ROV):
 
     name: str = "Path-End"
 
-    def _valid_ann(self, ann: "Ann", recv_rel: "Relationships") -> bool:
+    def _valid_ann(self, ann: "Ann", from_rel: "Relationships") -> bool:
         """Returns announcement validity by checking pathend records"""
 
         origin_asn = ann.origin
@@ -27,8 +27,8 @@ class PathEnd(ROV):
             # Mypy thinks this is unreachable for some reason, even tho tests pass
             for neighbor in origin_as_obj.neighbors:
                 if neighbor.asn == ann.as_path[-2]:
-                    return super()._valid_ann(ann, recv_rel)
+                    return super()._valid_ann(ann, from_rel)
             # Provider is fake, return False
             return False
         else:
-            return super()._valid_ann(ann, recv_rel)
+            return super()._valid_ann(ann, from_rel)
