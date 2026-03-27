@@ -19,7 +19,7 @@ types-requests==2.32.4.20260107
 types-psutil==7.2.1.20260116
 types-PyYAML==6.0.12.20250915
 types-tqdm==4.67.0.20250809
-mypy==1.19.1
+ty==0.0.24
 tox==4.34.1
 pytest-xdist==3.8.0
 ruff==0.14.13
