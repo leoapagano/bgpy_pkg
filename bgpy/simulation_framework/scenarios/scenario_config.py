@@ -93,9 +93,7 @@ class ScenarioConfig:
 
         if self.propagation_rounds is None:
             # BGP-iSec needs this. NOTE: mypy thinks this is unreachable
-            if (
-                issubclass(self.AdoptPolicyCls, BGPiSecTransitive)
-            ):
+            if issubclass(self.AdoptPolicyCls, BGPiSecTransitive):
                 from bgpy.simulation_framework import ShortestPathPrefixHijack  # noqa
 
                 if issubclass(self.ScenarioCls, ShortestPathPrefixHijack):
