@@ -15,6 +15,7 @@ authors = [
     {name = "Arvind Kasiliya", email = "arvind.kasiliya@uconn.edu"},
     {name = "Joel Braun", email = "joelbraun@protonmail.com"},
     {name = "Dan Foster", email = "danfosterdev@gmail.com"},
+    {name = "Leo Pagano", email = "leo@leoapagano.com"},
 ]
 maintainers = [
   {name = "Justin Furuness", email = "jfuruness@gmail.com"}
