@@ -134,7 +134,7 @@ class AccidentalRouteLeak(VictimsPrefix):
     def _get_attacker_asns(
         self,
         override_attacker_asns: frozenset[int] | None,
-        attacker_asns: frozenset[int] | None,
+        prev_attacker_asns: frozenset[int] | None,
         engine: Optional["BaseSimulationEngine"],
     ) -> frozenset[int]:
         """Gets attacker ASNs, overriding the valid prefix which has no attackers
@@ -150,19 +150,19 @@ class AccidentalRouteLeak(VictimsPrefix):
         """
 
         assert engine, "Need engine for attacker customer cones"
-        attacker_asns = super()._get_attacker_asns(
-            override_attacker_asns, attacker_asns, engine
+        prev_attacker_asns = super()._get_attacker_asns(
+            override_attacker_asns, prev_attacker_asns, engine
         )
         # Stores customer cones of attacker ASNs
         # used in untrackable func and when selecting victims
-        for attacker_asn in attacker_asns:
+        for attacker_asn in prev_attacker_asns:
             self._attackers_customer_cones_asns.update(
                 self._get_cone_size_helper(
                     engine.as_graph.as_dict[attacker_asn],
                     dict(),
                 ),
             )
-        return attacker_asns
+        return prev_attacker_asns
 
     def _get_possible_victim_asns(
         self,
