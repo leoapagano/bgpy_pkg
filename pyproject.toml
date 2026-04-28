@@ -94,6 +94,14 @@ test = [
     "uv==0.11.7"
 ]
 
+[tool.uv]
+# Reduce supply-chain risk by avoiding very recent uploads.
+exclude-newer = "7 days"
+
+[tool.uv.pip]
+# Keep pip-style workflows aligned with the same age gate.
+exclude-newer = "7 days"
+
 [tool.setuptools]
 include-package-data = true
 
